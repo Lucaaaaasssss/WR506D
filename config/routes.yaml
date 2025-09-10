@@ -1,5 +1,12 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+# config/routes.yaml
+product_list:
+    path: /products
+    controller: App\Controller\ProductController::listProducts
+    methods: [GET]
+
+product_view:
+    path: /product/{id}
+    controller: App\Controller\ProductController::viewProduct
+    requirements:
+        id: \d+
+    methods: [GET]
