@@ -1,0 +1,11 @@
+api_platform:
+    title: WR506 API
+    version: 1.0.0
+    graphql:
+        enabled: true
+        graphiql:
+            enabled: true
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
