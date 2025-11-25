@@ -32,6 +32,12 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
             $movie->setUrl($faker->url);
             $movie->setBudget($faker->randomFloat(2, 1000000, 200000000));
 
+            // 20% de chance d'être un brouillon
+            $movie->setDraft($faker->boolean(20));
+
+            // 30% de chance d'être offline
+            $movie->setOnline($faker->boolean(70));
+
             // Ajouter entre 2 et 5 acteurs aléatoires
             $nbActors = $faker->numberBetween(2, 5);
             for ($j = 0; $j < $nbActors; $j++) {

@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -16,8 +20,22 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource]
-#[ApiFilter(SearchFilter::class, properties: ['name' => 'start'])]
-#[ApiFilter(RangeFilter::class, properties: ['duration'])]
+// SearchFilter: rechercher dans les champs texte
+#[ApiFilter(SearchFilter::class, properties: [
+    'name' => 'partial',        // recherche partielle dans le nom
+    'description' => 'partial',  // recherche partielle dans la description
+    'director.name' => 'partial' // recherche sur le nom du director (relation)
+])]
+// RangeFilter: filtrer les nombres dans une plage
+#[ApiFilter(RangeFilter::class, properties: ['duration', 'budget', 'nbEntries'])]
+// DateFilter: filtrer par date
+#[ApiFilter(DateFilter::class, properties: ['releaseData', 'createdAt'])]
+// ExistsFilter: vérifier si une propriété est null ou non
+#[ApiFilter(ExistsFilter::class, properties: ['description', 'image', 'director'])]
+// BooleanFilter: filtrer les films en brouillon/publiés et online/offline
+#[ApiFilter(BooleanFilter::class, properties: ['draft', 'online'])]
+// OrderFilter: trier les résultats (TRI ≠ FILTRE mais utile)
+#[ApiFilter(OrderFilter::class, properties: ['name', 'duration', 'budget', 'releaseData', 'createdAt'])]
 #[ORM\HasLifecycleCallbacks]
 class Movie
 {
@@ -73,6 +91,12 @@ class Movie
 
     #[ORM\Column]
     private ?float $budget = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $draft = false;
+
+    #[ORM\Column(options: ['default' => true])]
+    private bool $online = true;
 
     public function __construct()
     {
@@ -256,6 +280,30 @@ class Movie
     public function setBudget(float $budget): static
     {
         $this->budget = $budget;
+
+        return $this;
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->draft;
+    }
+
+    public function setDraft(bool $draft): static
+    {
+        $this->draft = $draft;
+
+        return $this;
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->online;
+    }
+
+    public function setOnline(bool $online): static
+    {
+        $this->online = $online;
 
         return $this;
     }
