@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ActorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +16,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 #[ApiResource]
+// SearchFilter: rechercher par nom/prénom
+#[ApiFilter(SearchFilter::class, properties: [
+    'lastname' => 'partial',
+    'firstname' => 'partial',
+    'bio' => 'partial'
+])]
+// DateFilter: filtrer par dates de naissance/décès
+#[ApiFilter(DateFilter::class, properties: ['dob', 'dod', 'createdAt'])]
+// ExistsFilter: vérifier si l'acteur est décédé (dod existe ou non)
+#[ApiFilter(ExistsFilter::class, properties: ['dod', 'firstname'])]
+// OrderFilter: trier par nom, dates
+#[ApiFilter(OrderFilter::class, properties: ['lastname', 'firstname', 'dob', 'createdAt'])]
 class Actor
 {
     #[ORM\Id]
