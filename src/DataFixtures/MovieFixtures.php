@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Actor;
+use App\Entity\Director;
 use App\Entity\Movie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -32,6 +33,11 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
             $movie->setUrl($faker->url);
             $movie->setBudget($faker->randomFloat(2, 1000000, 200000000));
 
+            // Assigner un réalisateur aléatoire
+            $directorReference = DirectorFixtures::DIRECTOR_REFERENCE . $faker->numberBetween(0, 49);
+            $director = $this->getReference($directorReference, Director::class);
+            $movie->setDirector($director);
+
             // 20% de chance d'être un brouillon
             $movie->setDraft($faker->boolean(20));
 
@@ -56,6 +62,7 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             ActorFixtures::class,
+            DirectorFixtures::class,
         ];
     }
 }

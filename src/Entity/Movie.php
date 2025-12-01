@@ -81,15 +81,19 @@ class Movie
     private Collection $actors;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Positive(message: 'Le nombre d\'entrées doit être positif')]
     private ?int $nbEntries = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
+    #[Assert\NotNull(message: 'Le réalisateur est obligatoire')]
     private ?Director $director = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Url(message: 'L\'URL doit être valide')]
     private ?string $url = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+    #[Assert\Positive(message: 'Le budget doit être positif')]
     private ?float $budget = null;
 
     #[ORM\Column(options: ['default' => false])]
@@ -265,7 +269,7 @@ class Movie
         return $this->url;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(?string $url): static
     {
         $this->url = $url;
 
@@ -277,7 +281,7 @@ class Movie
         return $this->budget;
     }
 
-    public function setBudget(float $budget): static
+    public function setBudget(?float $budget): static
     {
         $this->budget = $budget;
 

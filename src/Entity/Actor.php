@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 #[ApiResource]
@@ -36,18 +37,46 @@ class Actor
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le nom de famille est obligatoire')]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Le nom doit contenir au moins {{ limit }} caractères',
+        maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères'
+    )]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le prénom ne peut pas dépasser {{ limit }} caractères'
+    )]
     private ?string $firstname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Assert\LessThanOrEqual(
+        value: 'today',
+        message: 'La date de naissance ne peut pas être dans le futur'
+    )]
     private ?\DateTime $dob = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Assert\LessThanOrEqual(
+        value: 'today',
+        message: 'La date de décès ne peut pas être dans le futur'
+    )]
+    #[Assert\Expression(
+        "this.getDod() === null or this.getDob() === null or this.getDod() > this.getDob()",
+        message: 'La date de décès doit être postérieure à la date de naissance'
+    )]
     private ?\DateTime $dod = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'La biographie est obligatoire')]
+    #[Assert\Length(
+        min: 10,
+        minMessage: 'La biographie doit contenir au moins {{ limit }} caractères'
+    )]
     private ?string $bio = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
