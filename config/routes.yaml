@@ -10,3 +10,6 @@ product_view:
     requirements:
         id: \d+
     methods: [GET]
+auth:
+    path: /auth
+    methods: ['POST']
