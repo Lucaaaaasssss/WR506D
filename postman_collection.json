@@ -1,0 +1,309 @@
+{
+  "info": {
+    "name": "WR506D - API Movies JWT",
+    "description": "Collection Postman pour tester l'API Movies avec authentification JWT",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Get JWT Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"jwt_token\", jsonData.token);",
+                  "console.log(\"Token saved:\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"MYPASSWORD\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth",
+              "host": ["{{base_url}}"],
+              "path": ["auth"]
+            },
+            "description": "Obtenir un token JWT en s'authentifiant avec email et mot de passe"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "item": [
+        {
+          "name": "Get all movies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/movies",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies"]
+            },
+            "description": "Récupérer la liste de tous les films"
+          },
+          "response": []
+        },
+        {
+          "name": "Get movie by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/movies/1758",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies", "1758"]
+            },
+            "description": "Récupérer un film par son ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create movie",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/ld+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Mon nouveau film\",\n    \"description\": \"Description du film\",\n    \"duration\": 120,\n    \"budget\": 1000000,\n    \"draft\": false,\n    \"online\": true,\n    \"director\": \"/api/directors/1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/movies",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies"]
+            },
+            "description": "Créer un nouveau film"
+          },
+          "response": []
+        },
+        {
+          "name": "Update movie",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/ld+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Film modifié\",\n    \"description\": \"Description modifiée\",\n    \"duration\": 150,\n    \"budget\": 2000000,\n    \"draft\": false,\n    \"online\": true,\n    \"director\": \"/api/directors/1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/movies/2057",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies", "2057"]
+            },
+            "description": "Modifier un film existant"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete movie",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/movies/2057",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies", "2057"]
+            },
+            "description": "Supprimer un film"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter movies by name",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/movies?name=Batman",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Batman"
+                }
+              ]
+            },
+            "description": "Filtrer les films par nom"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter movies by duration",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/movies?duration[gte]=100&duration[lte]=150",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies"],
+              "query": [
+                {
+                  "key": "duration[gte]",
+                  "value": "100"
+                },
+                {
+                  "key": "duration[lte]",
+                  "value": "150"
+                }
+              ]
+            },
+            "description": "Filtrer les films par durée (entre 100 et 150 minutes)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Actors",
+      "item": [
+        {
+          "name": "Get all actors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/actors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "actors"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Directors",
+      "item": [
+        {
+          "name": "Get all directors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/directors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "directors"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get all categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
