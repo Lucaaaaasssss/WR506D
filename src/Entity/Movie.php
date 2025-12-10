@@ -112,6 +112,10 @@ class Movie
     #[ORM\Column(options: ['default' => true])]
     private bool $online = true;
 
+    #[ORM\OneToOne(inversedBy: 'movie', targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?MediaObject $poster = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -318,6 +322,18 @@ class Movie
     public function setOnline(bool $online): static
     {
         $this->online = $online;
+
+        return $this;
+    }
+
+    public function getPoster(): ?MediaObject
+    {
+        return $this->poster;
+    }
+
+    public function setPoster(?MediaObject $poster): static
+    {
+        $this->poster = $poster;
 
         return $this;
     }

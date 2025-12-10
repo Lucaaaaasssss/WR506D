@@ -98,6 +98,10 @@ class Actor
     #[ORM\ManyToMany(targetEntity: Movie::class, inversedBy: 'actors')]
     private Collection $movies;
 
+    #[ORM\OneToOne(inversedBy: 'actor', targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?MediaObject $photo = null;
+
     public function __construct()
     {
         $this->movies = new ArrayCollection();
@@ -201,6 +205,18 @@ class Actor
     public function removeMovie(Movie $movie): static
     {
         $this->movies->removeElement($movie);
+
+        return $this;
+    }
+
+    public function getPhoto(): ?MediaObject
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?MediaObject $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }
