@@ -9,7 +9,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    security: "is_granted('ROLE_USER')",
+    operations: [
+        new \ApiPlatform\Metadata\GetCollection(security: "is_granted('ROLE_USER')"),
+        new \ApiPlatform\Metadata\Get(security: "is_granted('ROLE_USER')"),
+        new \ApiPlatform\Metadata\Post(security: "is_granted('ROLE_ADMIN')"),
+        new \ApiPlatform\Metadata\Put(security: "is_granted('ROLE_ADMIN')"),
+        new \ApiPlatform\Metadata\Patch(security: "is_granted('ROLE_ADMIN')"),
+        new \ApiPlatform\Metadata\Delete(security: "is_granted('ROLE_ADMIN')"),
+    ]
+)]
 class Category
 {
     #[ORM\Id]

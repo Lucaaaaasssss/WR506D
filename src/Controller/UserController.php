@@ -24,14 +24,41 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/api/editor', name: 'app_editor', methods: ['GET'])]
+    #[IsGranted('ROLE_EDITOR')]
+    public function editor(): JsonResponse
+    {
+        return new JsonResponse([
+            'message' => 'Accès éditeur - Vous pouvez modifier du contenu',
+            'user' => [
+                'email' => $this->getUser()->getUserIdentifier(),
+                'roles' => $this->getUser()->getRoles(),
+            ]
+        ]);
+    }
+
+    #[Route('/api/manager', name: 'app_manager', methods: ['GET'])]
+    #[IsGranted('ROLE_MANAGER')]
+    public function manager(): JsonResponse
+    {
+        return new JsonResponse([
+            'message' => 'Accès manager - Vous pouvez gérer des équipes',
+            'user' => [
+                'email' => $this->getUser()->getUserIdentifier(),
+                'roles' => $this->getUser()->getRoles(),
+            ]
+        ]);
+    }
+
     #[Route('/api/admin', name: 'app_admin', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function admin(): JsonResponse
     {
         return new JsonResponse([
-            'message' => 'Vous êtes admin !',
+            'message' => 'Accès admin - Vous avez tous les privilèges',
             'user' => [
                 'email' => $this->getUser()->getUserIdentifier(),
+                'roles' => $this->getUser()->getRoles(),
             ]
         ]);
     }
