@@ -20,10 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource(
-    security: "is_granted('ROLE_USER')",
     operations: [
-        new \ApiPlatform\Metadata\GetCollection(security: "is_granted('ROLE_USER')"),
-        new \ApiPlatform\Metadata\Get(security: "is_granted('ROLE_USER')"),
+        new \ApiPlatform\Metadata\GetCollection(),
+        new \ApiPlatform\Metadata\Get(),
         new \ApiPlatform\Metadata\Post(security: "is_granted('ROLE_ADMIN')"),
         new \ApiPlatform\Metadata\Put(security: "is_granted('ROLE_ADMIN')"),
         new \ApiPlatform\Metadata\Patch(security: "is_granted('ROLE_ADMIN')"),
@@ -96,6 +95,7 @@ class Movie
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
     #[Assert\NotNull(message: 'Le réalisateur est obligatoire')]
+    #[ApiPlatform\Metadata\ApiProperty(readableLink: true)]
     private ?Director $director = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -194,10 +194,12 @@ class Movie
 
 
     #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function setCreatedAt(): void
     {
+        if ($this->createdAt === null) {
             $this->createdAt = new \DateTimeImmutable();
-
+        }
     }
 
     /**

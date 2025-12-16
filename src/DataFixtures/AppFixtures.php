@@ -3,12 +3,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Director;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Actor;
 use App\Entity\Movie;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements \Doctrine\Common\DataFixtures\DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -52,10 +53,19 @@ class AppFixtures extends Fixture
             $movie->setUrl('https://example.com/movies/' . urlencode($item));
             $movie->setBudget($fakerMovie->numberBetween(1000000, 200000000));
 
+            // Assigner un director aléatoire
+            $directorReference = DirectorFixtures::DIRECTOR_REFERENCE . $fakerMovie->numberBetween(0, 49);
+            $director = $this->getReference($directorReference, Director::class);
+            $movie->setDirector($director);
 
-            $durationMin = 60 * 60;   // 1h
-            $durationMax = 270 * 60;  // 4h30
+            $durationMin = 60;   // 1h
+            $durationMax = 270;  // 4h30
             $movie->setDuration($fakerMovie->numberBetween($durationMin, $durationMax));
+
+            // 10% de chance d'être un brouillon
+            $movie->setDraft($fakerMovie->boolean(10));
+            // 95% de chance d'être en ligne
+            $movie->setOnline($fakerMovie->boolean(95));
 
             $categoryName = $fakerMovie->movieGenre;
             if (!array_key_exists($categoryName, $categoriesArray)) {
@@ -76,6 +86,13 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            DirectorFixtures::class,
+        ];
     }
 }
 

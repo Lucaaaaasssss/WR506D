@@ -27,8 +27,6 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
             // Date de sortie aléatoire entre 1950 et aujourd'hui
             $releaseDate = $faker->dateTimeBetween('-70 years', 'now');
             $movie->setReleaseData(\DateTime::createFromInterface($releaseDate));
-
-            $movie->setImage($faker->imageUrl(640, 480, 'movies'));
             $movie->setNbEntries($faker->numberBetween(100000, 10000000));
             $movie->setUrl($faker->url);
             $movie->setBudget($faker->randomFloat(2, 1000000, 200000000));
