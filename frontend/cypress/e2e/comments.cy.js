@@ -2,8 +2,8 @@ describe('Comments (Authenticated User)', () => {
   beforeEach(() => {
     // Login first
     cy.visit('/login')
-    cy.get('input[name="email"]').type('user@example.com')
-    cy.get('input[name="password"]').type('user')
+    cy.get('input[name="email"]').type('user@test.com')
+    cy.get('input[name="password"]').type('user123')
     cy.get('button[type="submit"]').click()
     cy.wait(1000)
   })

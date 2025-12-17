@@ -61,11 +61,14 @@ describe('Movie Creation (Authenticated)', () => {
     cy.get('input[name="email"]').type('admin@test.com')
     cy.get('input[name="password"]').type('admin123')
     cy.get('button[type="submit"]').click()
-    cy.wait(1000)
+    // Wait for login to complete and redirection
+    cy.url().should('eq', Cypress.config().baseUrl + '/')
+    cy.wait(500)
   })
 
   it('should access movie creation form', () => {
     cy.visit('/movies/create')
+    cy.url().should('include', '/movies/create')
     cy.contains('Nouveau film').should('be.visible')
     cy.get('input[type="text"]').should('exist')
   })
