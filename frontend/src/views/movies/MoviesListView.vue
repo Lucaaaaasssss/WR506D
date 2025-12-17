@@ -12,7 +12,7 @@
               v-model="filters.search"
               type="text"
               placeholder="Rechercher un film..."
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
               @input="loadMovies"
             />
           </div>
@@ -20,7 +20,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Trier par</label>
             <select
               v-model="filters.sort"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
               @change="loadMovies"
             >
               <option value="createdAt:desc">Plus récents</option>
@@ -35,7 +35,7 @@
               v-model="filters.director"
               type="text"
               placeholder="Nom du réalisateur..."
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
               @input="loadMovies"
             />
           </div>
@@ -44,7 +44,7 @@
     </div>
 
     <div v-if="loading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
     </div>
 
     <div v-else-if="error" class="bg-red-50 p-4 rounded-md">
@@ -55,40 +55,30 @@
       <p class="text-gray-600">Aucun film trouvé.</p>
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       <div
         v-for="movie in movies"
         :key="movie.id"
         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
       >
-        <div class="h-64 bg-gray-200 flex items-center justify-center">
+        <div class="aspect-[2/3] bg-gray-200 flex items-center justify-center overflow-hidden">
           <img
-            v-if="movie.poster?.contentUrl"
-            :src="movie.poster.contentUrl"
+            :src="movie.poster?.contentUrl || `https://picsum.photos/seed/${movie.id}/300/450`"
             :alt="movie.name"
             class="w-full h-full object-cover"
           />
-          <span v-else class="text-gray-400">Pas d'image</span>
         </div>
         <div class="p-4">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">{{ movie.name }}</h3>
-          <p class="text-gray-600 text-sm mb-2 line-clamp-2">
-            {{ movie.description || 'Pas de description' }}
+          <h3 class="text-lg font-bold text-gray-900 mb-1 line-clamp-2">{{ movie.name }}</h3>
+          <p v-if="getDirectorName(movie.director)" class="text-sm text-gray-500 mb-3 line-clamp-1">
+            {{ getDirectorName(movie.director) }}
           </p>
-          <p v-if="getDirectorName(movie.director)" class="text-sm text-gray-500 mb-2">
-            Réalisateur: {{ getDirectorName(movie.director) }}
-          </p>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-500">
-              {{ movie.duration ? `${movie.duration} min` : '' }}
-            </span>
-            <router-link
-              :to="{ name: 'movie-detail', params: { id: movie.id } }"
-              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-            >
-              Voir détails
-            </router-link>
-          </div>
+          <router-link
+            :to="{ name: 'movie-detail', params: { id: movie.id } }"
+            class="block text-center w-full px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-black"
+          >
+            Voir détails
+          </router-link>
         </div>
       </div>
     </div>

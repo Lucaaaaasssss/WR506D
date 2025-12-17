@@ -10,7 +10,7 @@
         </div>
 
         <div v-if="loading" class="flex justify-center items-center py-12">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
         </div>
 
         <div v-else-if="error" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
@@ -26,8 +26,8 @@
             >
                 <div class="px-6 py-8">
                     <div class="flex items-center justify-center mb-4">
-                        <div class="bg-blue-100 rounded-full p-4">
-                            <svg class="w-12 h-12 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                        <div class="bg-gray-100 rounded-full p-4">
+                            <svg class="w-12 h-12 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
                         </div>

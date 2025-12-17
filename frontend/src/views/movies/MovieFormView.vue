@@ -18,7 +18,7 @@
             v-model="form.name"
             type="text"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
           />
         </div>
 
@@ -27,7 +27,7 @@
           <textarea
             v-model="form.description"
             rows="4"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
           ></textarea>
         </div>
 
@@ -39,7 +39,7 @@
               type="number"
               min="30"
               max="400"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
             />
           </div>
 
@@ -48,7 +48,7 @@
             <input
               v-model="form.releaseData"
               type="date"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
             />
           </div>
         </div>
@@ -61,7 +61,7 @@
               type="number"
               step="0.01"
               min="0"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
             />
           </div>
 
@@ -71,7 +71,7 @@
               v-model.number="form.nbEntries"
               type="number"
               min="0"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
             />
           </div>
         </div>
@@ -81,7 +81,7 @@
           <input
             v-model="form.url"
             type="url"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
           />
         </div>
 
@@ -93,7 +93,7 @@
           <select
             v-model="form.director"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900 text-gray-900 bg-white"
           >
             <option value="" class="text-gray-500">Sélectionnez un réalisateur</option>
             <option
@@ -113,7 +113,7 @@
             type="file"
             accept="image/*"
             @change="handleFileChange"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900"
           />
           <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG (max 5MB)</p>
         </div>
@@ -123,7 +123,7 @@
             <input
               v-model="form.draft"
               type="checkbox"
-              class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              class="rounded border-gray-300 text-gray-900 focus:ring-gray-900"
             />
             <span class="ml-2 text-sm text-gray-700">Brouillon</span>
           </label>
@@ -132,7 +132,7 @@
             <input
               v-model="form.online"
               type="checkbox"
-              class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              class="rounded border-gray-300 text-gray-900 focus:ring-gray-900"
             />
             <span class="ml-2 text-sm text-gray-700">En ligne</span>
           </label>
@@ -142,7 +142,7 @@
           <button
             type="submit"
             :disabled="submitting"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-black disabled:opacity-50"
           >
             {{ submitting ? 'Enregistrement...' : (isEdit ? 'Mettre à jour' : 'Créer') }}
           </button>
