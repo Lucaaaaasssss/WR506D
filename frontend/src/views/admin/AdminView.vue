@@ -60,7 +60,7 @@
                   <span
                     v-for="role in user.roles"
                     :key="role"
-                    class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded mr-1"
+                    class="inline-block bg-gray-100 text-gray-900 text-xs px-2 py-1 rounded mr-1"
                   >
                     {{ role }}
                   </span>
@@ -69,7 +69,7 @@
                   <button
                     v-if="user.roles && !user.roles.includes('ROLE_ADMIN')"
                     @click="promoteToAdmin(user.id)"
-                    class="text-indigo-600 hover:text-indigo-900 mr-3"
+                    class="text-gray-900 hover:text-black mr-3"
                   >
                     Promouvoir Admin
                   </button>
@@ -99,17 +99,17 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
       <div class="bg-white rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Utilisateurs</h3>
-        <p class="text-3xl font-bold text-indigo-600">{{ Array.isArray(users) ? users.length : 0 }}</p>
+        <p class="text-3xl font-bold text-gray-900">{{ Array.isArray(users) ? users.length : 0 }}</p>
       </div>
       <div class="bg-white rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-2">Administrateurs</h3>
-        <p class="text-3xl font-bold text-indigo-600">
+        <p class="text-3xl font-bold text-gray-900">
           {{ Array.isArray(users) ? users.filter(u => u.roles && u.roles.includes('ROLE_ADMIN')).length : 0 }}
         </p>
       </div>
       <div class="bg-white rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-2">Utilisateurs simples</h3>
-        <p class="text-3xl font-bold text-indigo-600">
+        <p class="text-3xl font-bold text-gray-900">
           {{ Array.isArray(users) ? users.filter(u => u.roles && !u.roles.includes('ROLE_ADMIN')).length : 0 }}
         </p>
       </div>

@@ -1,12 +1,12 @@
 <template>
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-32"></div>
+            <div class="bg-gradient-to-r from-gray-800 to-gray-900 h-32"></div>
 
             <div class="px-6 py-8">
                 <div class="flex items-center justify-center -mt-20 mb-6">
                     <div class="bg-white rounded-full p-2 shadow-lg">
-                        <div class="bg-blue-500 rounded-full w-24 h-24 flex items-center justify-center">
+                        <div class="bg-gray-900 rounded-full w-24 h-24 flex items-center justify-center">
                             <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="max-w-7xl mx-auto">
     <div v-if="loading" class="text-center py-8">
       <p class="text-gray-600">Chargement...</p>
     </div>
@@ -8,114 +8,125 @@
       <p class="text-red-800">{{ error }}</p>
     </div>
 
-    <div v-else-if="movie" class="space-y-6">
-      <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-3">
-          <div class="lg:col-span-1">
-            <div class="h-96 bg-gray-200 flex items-center justify-center">
+    <div v-else-if="movie">
+      <!-- Contenu principal -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+        <!-- Affiche -->
+        <div class="lg:col-span-4">
+          <div class="sticky top-6">
+            <div class="aspect-[2/3] bg-gray-200 overflow-hidden shadow-2xl">
               <img
-                v-if="movie.poster?.contentUrl"
-                :src="movie.poster.contentUrl"
+                :src="movie.poster?.contentUrl || `https://picsum.photos/seed/${movie.id}/400/600`"
                 :alt="movie.name"
                 class="w-full h-full object-cover"
               />
-              <span v-else class="text-gray-400">Pas d'image</span>
             </div>
           </div>
-          <div class="lg:col-span-2 p-6">
-            <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
-              <h1 class="text-3xl font-bold text-gray-900">{{ movie.name }}</h1>
-              <div v-if="authStore.isAdmin" class="flex gap-2 flex-shrink-0">
-                <router-link
-                  :to="{ name: 'movie-edit', params: { id: movie.id } }"
-                  class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                >
-                  Modifier
-                </router-link>
-                <button
-                  @click="deleteMovie"
-                  class="inline-flex items-center px-3 py-2 border border-red-300 text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50"
-                >
-                  Supprimer
-                </button>
+        </div>
+
+        <!-- Informations -->
+        <div class="lg:col-span-8 space-y-8">
+          <!-- Header avec titre et actions admin -->
+          <div class="flex justify-between items-start flex-wrap gap-4">
+            <div>
+              <h1 class="text-4xl font-black text-gray-900 mb-2">{{ movie.name }}</h1>
+              <div class="flex items-center gap-3 text-sm text-gray-500">
+                <span v-if="movie.releaseData">{{ new Date(movie.releaseData).getFullYear() }}</span>
+                <span v-if="movie.duration">{{ movie.duration }} min</span>
+                <span v-if="director">{{ director.firstname }} {{ director.lastname }}</span>
               </div>
             </div>
-
-            <div class="space-y-3 text-gray-700">
-              <p v-if="director">
-                <span class="font-semibold">Réalisateur:</span> {{ director.firstname }} {{ director.lastname }}
-              </p>
-              <p v-if="movie.duration">
-                <span class="font-semibold">Durée:</span> {{ movie.duration }} minutes
-              </p>
-              <p v-if="movie.releaseData">
-                <span class="font-semibold">Date de sortie:</span>
-                {{ new Date(movie.releaseData).toLocaleDateString('fr-FR') }}
-              </p>
-              <p v-if="movie.budget && movie.budget > 0">
-                <span class="font-semibold">Budget:</span> {{ formatBudget(movie.budget) }}
-              </p>
-              <p v-if="movie.nbEntries && movie.nbEntries > 0">
-                <span class="font-semibold">Entrées:</span> {{ movie.nbEntries.toLocaleString('fr-FR') }}
-              </p>
-              <div v-if="movie.categories && movie.categories.length > 0">
-                <span class="font-semibold">Catégories:</span>
-                <span
-                  v-for="category in movie.categories"
-                  :key="category.id"
-                  class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded ml-2"
-                >
-                  {{ category.name }}
-                </span>
-              </div>
-            </div>
-
-            <div v-if="movie.description" class="mt-4">
-              <h3 class="font-semibold text-gray-900 mb-2">Description</h3>
-              <p class="text-gray-700">{{ movie.description }}</p>
-            </div>
-
-            <div v-if="movie.url" class="mt-4">
-              <a
-                :href="movie.url"
-                target="_blank"
-                class="text-indigo-600 hover:text-indigo-800"
+            <div v-if="authStore.isAdmin" class="flex gap-2">
+              <router-link
+                :to="{ name: 'movie-edit', params: { id: movie.id } }"
+                class="px-4 py-2 border border-gray-900 text-sm font-medium text-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
               >
-                Voir plus d'informations
-              </a>
+                Modifier
+              </router-link>
+              <button
+                @click="deleteMovie"
+                class="px-4 py-2 border border-red-600 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white transition-colors"
+              >
+                Supprimer
+              </button>
             </div>
+          </div>
+          <!-- Catégories -->
+          <div v-if="movie.categories && movie.categories.length > 0" class="flex flex-wrap gap-2">
+            <span
+              v-for="category in movie.categories"
+              :key="category.id"
+              class="px-3 py-1 bg-gray-900 text-white text-sm font-medium uppercase tracking-wide"
+            >
+              {{ category.name }}
+            </span>
+          </div>
+
+          <!-- Description -->
+          <div v-if="movie.description" class="prose max-w-none">
+            <p class="text-lg text-gray-700 leading-relaxed">{{ movie.description }}</p>
+          </div>
+
+          <!-- Métadonnées -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-6 py-6 border-t border-b border-gray-200">
+            <div v-if="movie.budget && movie.budget > 0">
+              <div class="text-xs text-gray-500 uppercase tracking-wider mb-1">Budget</div>
+              <div class="text-lg font-bold text-gray-900">{{ formatBudget(movie.budget) }}</div>
+            </div>
+            <div v-if="movie.nbEntries && movie.nbEntries > 0">
+              <div class="text-xs text-gray-500 uppercase tracking-wider mb-1">Entrées</div>
+              <div class="text-lg font-bold text-gray-900">{{ movie.nbEntries.toLocaleString('fr-FR') }}</div>
+            </div>
+            <div v-if="movie.releaseData">
+              <div class="text-xs text-gray-500 uppercase tracking-wider mb-1">Sortie</div>
+              <div class="text-lg font-bold text-gray-900">{{ new Date(movie.releaseData).toLocaleDateString('fr-FR') }}</div>
+            </div>
+          </div>
+
+          <!-- Lien externe -->
+          <div v-if="movie.url">
+            <a
+              :href="movie.url"
+              target="_blank"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium hover:bg-black transition-colors"
+            >
+              Plus d'informations
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
 
       <!-- Comments Section -->
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Commentaires</h2>
+      <div class="border-t border-gray-200 pt-12">
+        <h2 class="text-3xl font-black text-gray-900 mb-8">Commentaires <span class="text-gray-400">({{ comments.length }})</span></h2>
 
         <!-- Add Comment Form -->
-        <div v-if="authStore.isAuthenticated" class="mb-6">
-          <form @submit.prevent="submitComment">
+        <div v-if="authStore.isAuthenticated" class="mb-10">
+          <form @submit.prevent="submitComment" class="space-y-3">
             <textarea
               v-model="newComment"
-              rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Ajouter un commentaire..."
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-gray-900 placeholder-gray-400"
+              placeholder="Partagez votre avis sur ce film..."
               required
             ></textarea>
-            <div class="mt-2">
+            <div class="flex justify-end">
               <button
                 type="submit"
                 :disabled="submittingComment"
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+                class="px-6 py-2.5 bg-gray-900 text-white font-medium hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {{ submittingComment ? 'Envoi...' : 'Publier' }}
+                {{ submittingComment ? 'Envoi en cours...' : 'Publier le commentaire' }}
               </button>
             </div>
           </form>
         </div>
-        <div v-else class="mb-6 p-4 bg-gray-50 rounded-md">
+        <div v-else class="mb-10 p-6 border border-gray-300 text-center">
           <p class="text-gray-600">
-            <router-link to="/login" class="text-indigo-600 hover:text-indigo-800">
+            <router-link to="/login" class="font-bold text-gray-900 hover:underline">
               Connectez-vous
             </router-link>
             pour laisser un commentaire.
@@ -123,23 +134,23 @@
         </div>
 
         <!-- Comments List -->
-        <div v-if="loadingComments" class="text-center py-4">
-          <p class="text-gray-600">Chargement des commentaires...</p>
+        <div v-if="loadingComments" class="text-center py-8">
+          <p class="text-gray-500">Chargement des commentaires...</p>
         </div>
 
-        <div v-else-if="comments.length === 0" class="text-center py-4">
-          <p class="text-gray-600">Aucun commentaire pour le moment.</p>
+        <div v-else-if="comments.length === 0" class="text-center py-12">
+          <p class="text-gray-500">Aucun commentaire pour le moment. Soyez le premier à donner votre avis !</p>
         </div>
 
-        <div v-else class="space-y-4">
+        <div v-else class="space-y-6">
           <div
             v-for="comment in comments"
             :key="comment.id"
-            class="border-b border-gray-200 pb-4 last:border-b-0"
+            class="pb-6 border-b border-gray-200 last:border-b-0"
           >
-            <div class="flex justify-between items-start">
+            <div class="flex justify-between items-start mb-3">
               <div>
-                <p class="font-semibold text-gray-900">
+                <p class="font-bold text-gray-900 text-lg">
                   {{ getAuthorName(comment.author) }}
                 </p>
                 <p class="text-sm text-gray-500">
@@ -149,12 +160,12 @@
               <button
                 v-if="authStore.isAdmin"
                 @click="deleteComment(comment.id)"
-                class="text-sm text-red-600 hover:text-red-800"
+                class="text-sm text-red-600 hover:text-red-800 font-medium"
               >
                 Supprimer
               </button>
             </div>
-            <p class="mt-2 text-gray-700">{{ comment.content }}</p>
+            <p class="text-gray-700 leading-relaxed">{{ comment.content }}</p>
           </div>
         </div>
       </div>
@@ -208,7 +219,8 @@ const loadComments = async () => {
   loadingComments.value = true
 
   try {
-    const response = await api.get(`/api/comments?movie=/api/movies/${route.params.id}&order[createdAt]=desc`)
+    const movieIri = encodeURIComponent(`/api/movies/${route.params.id}`)
+    const response = await api.get(`/api/comments?movie=${movieIri}&order[createdAt]=desc`)
     const commentsData = response.data['hydra:member'] || response.data.member || response.data
 
     console.log('Commentaires chargés:', commentsData)

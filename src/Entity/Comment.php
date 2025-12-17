@@ -66,7 +66,7 @@ class Comment
     private ?User $author = null;
 
     #[ORM\ManyToOne(targetEntity: Movie::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotNull(message: 'Le film associé au commentaire est obligatoire')]
     #[Groups(['comment:read', 'comment:write'])]
     private ?Movie $movie = null;
