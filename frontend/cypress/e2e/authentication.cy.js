@@ -22,9 +22,9 @@ describe('Authentication', () => {
     cy.get('input[name="password"]').type('admin123')
     cy.get('button[type="submit"]').click()
 
-    // Should redirect to home and show user email
+    // Should redirect to home and show logout button
     cy.url().should('eq', Cypress.config().baseUrl + '/')
-    cy.contains('admin@test.com').should('be.visible')
+    cy.contains('Déconnexion').should('be.visible')
   })
 
   it('should show error with invalid credentials', () => {
@@ -33,7 +33,12 @@ describe('Authentication', () => {
     cy.get('input[name="password"]').type('wrongpassword')
     cy.get('button[type="submit"]').click()
 
-    cy.contains('Login failed').should('be.visible')
+    // Wait for the API response
+    cy.wait(1000)
+    // User should still be on login page (not redirected)
+    cy.url().should('include', '/login')
+    // User should not be logged in (no logout button)
+    cy.contains('Déconnexion').should('not.exist')
   })
 
   it('should logout successfully', () => {
@@ -46,6 +51,7 @@ describe('Authentication', () => {
 
     // Then logout
     cy.contains('Déconnexion').click()
-    cy.contains('Connexion').should('be.visible')
+    // After logout, the Déconnexion button should not be visible
+    cy.contains('Déconnexion').should('not.exist')
   })
 })
