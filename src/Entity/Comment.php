@@ -60,7 +60,7 @@ class Comment
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotNull(message: 'L\'auteur du commentaire est obligatoire')]
     #[Groups(['comment:read', 'comment:write'])]
     private ?User $author = null;

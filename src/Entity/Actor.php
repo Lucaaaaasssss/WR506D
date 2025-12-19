@@ -27,11 +27,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         new \ApiPlatform\Metadata\Delete(security: "is_granted('ROLE_ADMIN')"),
     ]
 )]
-// SearchFilter: rechercher par nom/prénom
+// SearchFilter: rechercher par nom/prénom (ipartial = insensible à la casse)
 #[ApiFilter(SearchFilter::class, properties: [
-    'lastname' => 'partial',
-    'firstname' => 'partial',
-    'bio' => 'partial'
+    'lastname' => 'ipartial',
+    'firstname' => 'ipartial',
+    'bio' => 'ipartial'
 ])]
 // DateFilter: filtrer par dates de naissance/décès
 #[ApiFilter(DateFilter::class, properties: ['dob', 'dod', 'createdAt'])]
