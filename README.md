@@ -1,6 +1,4 @@
-# Bomboclaat - MovieCMS
 
-Application de gestion de films avec API Symfony et frontend Vue.js.
 
 ## Prérequis
 
@@ -84,57 +82,12 @@ npm run dev
 
 Le frontend sera accessible sur `http://localhost:5173`
 
-## Tests E2E avec Cypress
-
-Les tests couvrent toute la partie publique et les fonctionnalités utilisateurs (pas l'administration).
-
 ### Prérequis pour les tests
 
 1. Le backend doit être lancé sur `http://localhost:8000`
 2. Le frontend doit être lancé sur `http://localhost:5173`
 3. La base de données doit contenir les fixtures
 
-### Lancer les tests
-
-**Mode interactif** (interface Cypress) :
-```bash
-cd frontend
-npm run test:e2e
-```
-
-**Mode headless** (CI/CD) :
-```bash
-cd frontend
-npm run test:e2e:ci
-```
-
-### Tests disponibles
-
-- **authentication.cy.js** : Inscription, connexion, déconnexion
-- **home.cy.js** : Page d'accueil et navigation
-- **movies.cy.js** : Liste, recherche, détails, création de films
-- **comments.cy.js** : Publication et suppression de commentaires
-
-## Structure du projet
-
-```
-wr506d/
-├── src/                    # Code source Symfony
-│   ├── Controller/         # Contrôleurs API
-│   ├── Entity/            # Entités Doctrine
-│   ├── Repository/        # Repositories
-│   └── DataFixtures/      # Données de test
-├── frontend/              # Application Vue.js
-│   ├── src/
-│   │   ├── views/        # Pages Vue
-│   │   ├── components/   # Composants réutilisables
-│   │   ├── stores/       # Stores Pinia
-│   │   └── services/     # Services (API)
-│   └── cypress/          # Tests E2E
-│       └── e2e/          # Fichiers de tests
-├── config/               # Configuration Symfony
-└── migrations/           # Migrations de base de données
-```
 
 ## Fonctionnalités
 
@@ -155,23 +108,6 @@ wr506d/
 
 ## Technologies utilisées
 
-### Backend
-- Symfony 7.2
-- API Platform
-- Doctrine ORM
-- PostgreSQL
-- JWT Authentication
-
-### Frontend
-- Vue.js 3
-- Vue Router
-- Pinia (state management)
-- Axios
-- Tailwind CSS
-
-### Tests
-- Cypress 15.7
-
 ## API Endpoints
 
 - `POST /auth` - Authentification
@@ -184,6 +120,3 @@ wr506d/
 - `POST /api/comments` - Publier un commentaire
 - `DELETE /api/comments/{id}` - Supprimer un commentaire
 
-## Auteur
-
-Lucas Lebecq - 2025

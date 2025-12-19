@@ -36,7 +36,7 @@
                                 v-model="form.firstname"
                                 name="firstname"
                                 type="text"
-                                class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
                                 placeholder="Jean"
                             />
                         </div>
@@ -49,7 +49,7 @@
                                 v-model="form.lastname"
                                 name="lastname"
                                 type="text"
-                                class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
                                 placeholder="Dupont"
                             />
                         </div>
@@ -66,7 +66,7 @@
                             type="email"
                             autocomplete="email"
                             required
-                            class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
+                            class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
                             placeholder="votre@email.com"
                         />
                     </div>
@@ -82,7 +82,7 @@
                             type="password"
                             autocomplete="new-password"
                             required
-                            class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
+                            class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm"
                             placeholder="••••••••"
                         />
                     </div>
@@ -92,7 +92,7 @@
                     <button
                         type="submit"
                         :disabled="loading"
-                        class="group relative w-full flex justify-center py-3.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-gray-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="group relative w-full flex justify-center py-3.5 px-4 border border-transparent text-sm font-bold text-white bg-gray-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
             <span v-if="loading" class="flex items-center">
               <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

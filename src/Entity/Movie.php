@@ -29,11 +29,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new \ApiPlatform\Metadata\Delete(security: "is_granted('ROLE_ADMIN')"),
     ]
 )]
-// SearchFilter: rechercher dans les champs texte
+// SearchFilter: rechercher dans les champs texte (ipartial = insensible à la casse)
 #[ApiFilter(SearchFilter::class, properties: [
-    'name' => 'partial',        // recherche partielle dans le nom
-    'description' => 'partial',  // recherche partielle dans la description
-    'director.name' => 'partial' // recherche sur le nom du director (relation)
+    'name' => 'ipartial',           // recherche partielle insensible à la casse dans le nom
+    'description' => 'ipartial',     // recherche partielle insensible à la casse dans la description
+    'director.firstname' => 'ipartial', // recherche sur le prénom du director
+    'director.lastname' => 'ipartial'   // recherche sur le nom du director
 ])]
 // RangeFilter: filtrer les nombres dans une plage
 #[ApiFilter(RangeFilter::class, properties: ['duration', 'budget', 'nbEntries'])]
