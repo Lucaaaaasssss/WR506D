@@ -59,6 +59,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $twoFactorSecret = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $twoFactorEnabled = false;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $twoFactorBackupCodes = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -156,6 +165,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
 
         return $data;
+    }
+
+    public function getTwoFactorSecret(): ?string
+    {
+        return $this->twoFactorSecret;
+    }
+
+    public function setTwoFactorSecret(?string $twoFactorSecret): static
+    {
+        $this->twoFactorSecret = $twoFactorSecret;
+
+        return $this;
+    }
+
+    public function isTwoFactorEnabled(): bool
+    {
+        return $this->twoFactorEnabled;
+    }
+
+    public function setTwoFactorEnabled(bool $twoFactorEnabled): static
+    {
+        $this->twoFactorEnabled = $twoFactorEnabled;
+
+        return $this;
+    }
+
+    public function getTwoFactorBackupCodes(): ?array
+    {
+        return $this->twoFactorBackupCodes;
+    }
+
+    public function setTwoFactorBackupCodes(?array $twoFactorBackupCodes): static
+    {
+        $this->twoFactorBackupCodes = $twoFactorBackupCodes;
+
+        return $this;
     }
 
     #[\Deprecated]

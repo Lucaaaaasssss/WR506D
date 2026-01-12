@@ -17,6 +17,7 @@ class MeController
             'firstname' => $user->getFirstname(),
             'lastname' => $user->getLastname(),
             'roles' => $user->getRoles(),
+            'twoFactorEnabled' => $user->isTwoFactorEnabled(),
         ];
 
         return new JsonResponse($userData);

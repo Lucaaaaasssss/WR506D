@@ -15,7 +15,7 @@
                     <p class="text-sm text-gray-900 font-medium">{{ error }}</p>
                 </div>
 
-                <div class="space-y-4">
+                <div v-if="!showTwoFAInput" class="space-y-4">
                     <div class="relative">
                         <label for="email-address" class="block text-xs font-bold text-gray-900 uppercase tracking-widest mb-1 ml-1">
                             Adresse email
@@ -47,6 +47,50 @@
                             placeholder="••••••••"
                         />
                     </div>
+                </div>
+
+                <!-- 2FA Input -->
+                <div v-else class="space-y-4">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-700">
+                                    Authentification à deux facteurs activée. Entrez le code à 6 chiffres de votre application d'authentification.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <label for="twofa-code" class="block text-xs font-bold text-gray-900 uppercase tracking-widest mb-1 ml-1">
+                            Code 2FA
+                        </label>
+                        <input
+                            id="twofa-code"
+                            v-model="form.twoFACode"
+                            name="twoFACode"
+                            type="text"
+                            maxlength="8"
+                            required
+                            autocomplete="off"
+                            class="appearance-none block w-full px-4 py-3 border border-gray-200 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-all sm:text-sm text-center text-2xl tracking-widest font-mono"
+                            placeholder="000000"
+                        />
+                        <p class="text-xs text-gray-500 mt-1 ml-1">Vous pouvez également utiliser un code de secours</p>
+                    </div>
+
+                    <button
+                        type="button"
+                        @click="cancelTwoFA"
+                        class="w-full text-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                        ← Retour
+                    </button>
                 </div>
 
                 <div>
@@ -83,29 +127,47 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import api from '../../services/api'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
 const form = ref({
     email: '',
-    password: ''
+    password: '',
+    twoFACode: ''
 })
 
 const error = ref(null)
 const loading = ref(false)
+const showTwoFAInput = ref(false)
 
 const handleSubmit = async () => {
     error.value = null
     loading.value = true
 
     try {
+        // Si on est sur l'écran 2FA, vérifier le code
+        if (showTwoFAInput.value) {
+            await verifyTwoFACode()
+            return
+        }
+
+        // Sinon, faire le login normal
         const result = await authStore.login({
             email: form.value.email,
             password: form.value.password
         })
 
         if (result.success) {
+            // Vérifier si le 2FA est activé
+            if (authStore.user?.twoFactorEnabled) {
+                showTwoFAInput.value = true
+                loading.value = false
+                // Garder le token temporairement mais déconnecter visuellement
+                return
+            }
+
             router.push('/')
         } else {
             error.value = result.error || "Identifiants invalides"
@@ -113,7 +175,34 @@ const handleSubmit = async () => {
     } catch (e) {
         error.value = "Une erreur technique est survenue"
     } finally {
+        if (!showTwoFAInput.value) {
+            loading.value = false
+        }
+    }
+}
+
+const verifyTwoFACode = async () => {
+    try {
+        const response = await api.post('/api/2fa/verify', {
+            email: form.value.email,
+            code: form.value.twoFACode
+        })
+
+        if (response.data.message === 'Code valide') {
+            // Code valide, rediriger
+            router.push('/')
+        }
+    } catch (e) {
+        error.value = e.response?.data?.error || "Code invalide"
+    } finally {
         loading.value = false
     }
+}
+
+const cancelTwoFA = () => {
+    showTwoFAInput.value = false
+    form.value.twoFACode = ''
+    error.value = null
+    authStore.logout()
 }
 </script>
