@@ -48,6 +48,16 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('user')
   }
 
+  async function refreshUser() {
+    try {
+      const userResponse = await api.get('/api/me')
+      user.value = userResponse.data
+      localStorage.setItem('user', JSON.stringify(userResponse.data))
+    } catch (error) {
+      console.error('Failed to refresh user', error)
+    }
+  }
+
   return {
     token,
     user,
@@ -55,6 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAdmin,
     login,
     register,
-    logout
+    logout,
+    refreshUser
   }
 })
