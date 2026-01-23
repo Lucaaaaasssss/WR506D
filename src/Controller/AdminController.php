@@ -19,8 +19,8 @@ class AdminController extends AbstractController
     public function listUsers(EntityManagerInterface $entityManager): JsonResponse
     {
         $users = $entityManager->getRepository(User::class)->findAll();
-        
-        $usersData = array_map(function(User $user) {
+
+        $usersData = array_map(function (User $user) {
             return [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
@@ -38,10 +38,9 @@ class AdminController extends AbstractController
         int $id,
         Request $request,
         EntityManagerInterface $entityManager
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $user = $entityManager->getRepository(User::class)->find($id);
-        
+
         if (!$user) {
             return new JsonResponse([
                 'error' => 'User not found'
@@ -49,7 +48,7 @@ class AdminController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        
+
         if (!isset($data['roles']) || !is_array($data['roles'])) {
             return new JsonResponse([
                 'error' => 'Invalid roles data'

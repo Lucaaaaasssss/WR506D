@@ -45,7 +45,7 @@ class AppFixtures extends Fixture implements \Doctrine\Common\DataFixtures\Depen
         $categoriesArray = [];
         $movies = $fakerMovie->movies(199);
 
-        foreach($movies as $item){
+        foreach ($movies as $item) {
             $movie = new Movie();
 
             $movie->setName($item);
@@ -78,7 +78,7 @@ class AppFixtures extends Fixture implements \Doctrine\Common\DataFixtures\Depen
             }
 
             shuffle($actorsArray);
-            foreach(array_slice($actorsArray, 0, rand(2,6)) as $ActorObject){
+            foreach (array_slice($actorsArray, 0, rand(2, 6)) as $ActorObject) {
                 $movie->addActor($ActorObject);
             }
             $movie->addCategory($category);
@@ -95,4 +95,3 @@ class AppFixtures extends Fixture implements \Doctrine\Common\DataFixtures\Depen
         ];
     }
 }
-
