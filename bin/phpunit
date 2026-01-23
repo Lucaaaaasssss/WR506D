@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
+
+if (is_file(dirname(__DIR__).'/vendor/phpunit/phpunit/phpunit')) {
+    if (!is_file(dirname(__DIR__).'/vendor/autoload.php')) {
+        throw new RuntimeException('Run "composer install" before running PHPUnit.');
+    }
+    require dirname(__DIR__).'/vendor/autoload.php';
+}
+
+require dirname(__DIR__).'/vendor/phpunit/phpunit/phpunit';
