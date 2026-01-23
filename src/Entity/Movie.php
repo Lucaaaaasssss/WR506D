@@ -95,7 +95,7 @@ class Movie
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
     #[Assert\NotNull(message: 'Le réalisateur est obligatoire')]
-    #[ApiPlatform\Metadata\ApiProperty(readableLink: true)]
+    #[\ApiPlatform\Metadata\ApiProperty(readableLink: true)]
     private ?Director $director = null;
 
     #[ORM\Column(length: 255, nullable: true)]
