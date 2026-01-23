@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\User;
+
+class MeController
+{
+    #[Route("/api/me", name: "get_current_user", methods: ["GET"])]
+    public function getCurrentUser(User $user): JsonResponse
+    {
+        $userData = [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+            'roles' => $user->getRoles(),
+            'twoFactorEnabled' => $user->isTwoFactorEnabled(),
+        ];
+
+        return new JsonResponse($userData);
+    }
+}
