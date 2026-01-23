@@ -14,7 +14,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-      - run: composer install --prefer-dist --no-progress
+      - run: composer install --prefer-dist --no-progress --no-scripts
       - run: vendor/bin/phpcs --standard=PSR12 src/
       - run: vendor/bin/phpstan analyze src/ --level=1
       - run: vendor/bin/phpmd src/ text cleancode,codesize,controversial,design || true
