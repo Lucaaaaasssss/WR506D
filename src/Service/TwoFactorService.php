@@ -22,8 +22,8 @@ class TwoFactorService
 
     public function generateSecret(): string
     {
-        // Générer un secret de 160 bits (32 caractères base32) compatible avec toutes les apps
-        $totp = TOTP::generate(null, 30, 'sha1', 6);
+        // Générer un secret compatible avec toutes les apps
+        $totp = TOTP::generate();
         return $totp->getSecret();
     }
 
@@ -110,7 +110,7 @@ class TwoFactorService
     {
         $hashedCodes = $user->getTwoFactorBackupCodes();
 
-        if (!$hashedCodes || empty($hashedCodes)) {
+        if (!$hashedCodes) {
             return false;
         }
 
@@ -130,7 +130,7 @@ class TwoFactorService
     {
         $hashedCodes = $user->getTwoFactorBackupCodes();
 
-        if (!$hashedCodes || empty($hashedCodes)) {
+        if (!$hashedCodes) {
             return false;
         }
 
