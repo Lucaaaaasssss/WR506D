@@ -16,6 +16,7 @@ class AppFixtures extends Fixture implements \Doctrine\Common\DataFixtures\Depen
         $faker = \Faker\Factory::create();
         $faker->addProvider(new \Xylis\FakerCinema\Provider\Person($faker));
 
+        $actorsArray = [];
         $actors = $faker->actors($gender = null, $count = 190, $duplicates = false);
         foreach ($actors as $item) {
             $actor = new Actor();
