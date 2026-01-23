@@ -46,7 +46,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"MYPASSWORD\"\n}"
+              "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"admin123\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/auth",
@@ -92,9 +92,9 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/movies/1758",
+              "raw": "{{base_url}}/api/movies/1",
               "host": ["{{base_url}}"],
-              "path": ["api", "movies", "1758"]
+              "path": ["api", "movies", "1"]
             },
             "description": "Récupérer un film par son ID"
           },
@@ -123,12 +123,12 @@
               "host": ["{{base_url}}"],
               "path": ["api", "movies"]
             },
-            "description": "Créer un nouveau film"
+            "description": "Créer un nouveau film (nécessite ROLE_ADMIN)"
           },
           "response": []
         },
         {
-          "name": "Update movie",
+          "name": "Update movie (PUT)",
           "request": {
             "method": "PUT",
             "header": [
@@ -146,11 +146,38 @@
               "raw": "{\n    \"name\": \"Film modifié\",\n    \"description\": \"Description modifiée\",\n    \"duration\": 150,\n    \"budget\": 2000000,\n    \"draft\": false,\n    \"online\": true,\n    \"director\": \"/api/directors/1\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/movies/2057",
+              "raw": "{{base_url}}/api/movies/1",
               "host": ["{{base_url}}"],
-              "path": ["api", "movies", "2057"]
+              "path": ["api", "movies", "1"]
             },
-            "description": "Modifier un film existant"
+            "description": "Modifier un film existant (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update movie (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/merge-patch+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Film partiellement modifié\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/movies/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "movies", "1"]
+            },
+            "description": "Modifier partiellement un film (nécessite ROLE_ADMIN)"
           },
           "response": []
         },
@@ -160,11 +187,11 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/movies/2057",
+              "raw": "{{base_url}}/api/movies/1",
               "host": ["{{base_url}}"],
-              "path": ["api", "movies", "2057"]
+              "path": ["api", "movies", "1"]
             },
-            "description": "Supprimer un film"
+            "description": "Supprimer un film (nécessite ROLE_ADMIN)"
           },
           "response": []
         },
@@ -192,35 +219,6 @@
             "description": "Filtrer les films par nom"
           },
           "response": []
-        },
-        {
-          "name": "Filter movies by duration",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/ld+json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/movies?duration[gte]=100&duration[lte]=150",
-              "host": ["{{base_url}}"],
-              "path": ["api", "movies"],
-              "query": [
-                {
-                  "key": "duration[gte]",
-                  "value": "100"
-                },
-                {
-                  "key": "duration[lte]",
-                  "value": "150"
-                }
-              ]
-            },
-            "description": "Filtrer les films par durée (entre 100 et 150 minutes)"
-          },
-          "response": []
         }
       ]
     },
@@ -241,17 +239,13 @@
               "raw": "{{base_url}}/api/actors",
               "host": ["{{base_url}}"],
               "path": ["api", "actors"]
-            }
+            },
+            "description": "Récupérer la liste de tous les acteurs (nécessite ROLE_USER)"
           },
           "response": []
-        }
-      ]
-    },
-    {
-      "name": "Directors",
-      "item": [
+        },
         {
-          "name": "Get all directors",
+          "name": "Get actor by ID",
           "request": {
             "method": "GET",
             "header": [
@@ -261,10 +255,131 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/directors",
+              "raw": "{{base_url}}/api/actors/1",
               "host": ["{{base_url}}"],
-              "path": ["api", "directors"]
-            }
+              "path": ["api", "actors", "1"]
+            },
+            "description": "Récupérer un acteur par son ID (nécessite ROLE_USER)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create actor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/ld+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"lastname\": \"Doe\",\n    \"firstname\": \"John\",\n    \"dob\": \"1990-05-15\",\n    \"bio\": \"John Doe est un acteur talentueux avec une carrière impressionnante dans le cinéma.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/actors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "actors"]
+            },
+            "description": "Créer un nouvel acteur (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update actor (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/ld+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"lastname\": \"Doe\",\n    \"firstname\": \"Jane\",\n    \"dob\": \"1992-08-20\",\n    \"bio\": \"Jane Doe est une actrice exceptionnelle reconnue pour ses performances dramatiques.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/actors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "actors", "1"]
+            },
+            "description": "Modifier un acteur existant (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update actor (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/merge-patch+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstname\": \"Johnny\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/actors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "actors", "1"]
+            },
+            "description": "Modifier partiellement un acteur (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete actor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/actors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "actors", "1"]
+            },
+            "description": "Supprimer un acteur (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter actors by lastname",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/actors?lastname=Doe",
+              "host": ["{{base_url}}"],
+              "path": ["api", "actors"],
+              "query": [
+                {
+                  "key": "lastname",
+                  "value": "Doe"
+                }
+              ]
+            },
+            "description": "Filtrer les acteurs par nom de famille"
           },
           "response": []
         }
@@ -287,7 +402,232 @@
               "raw": "{{base_url}}/api/categories",
               "host": ["{{base_url}}"],
               "path": ["api", "categories"]
-            }
+            },
+            "description": "Récupérer la liste de toutes les catégories (nécessite ROLE_USER)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get category by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            },
+            "description": "Récupérer une catégorie par son ID (nécessite ROLE_USER)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/ld+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Science-Fiction\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            },
+            "description": "Créer une nouvelle catégorie (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update category (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/ld+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Action\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            },
+            "description": "Modifier une catégorie existante (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update category (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/merge-patch+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Comédie\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            },
+            "description": "Modifier partiellement une catégorie (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            },
+            "description": "Supprimer une catégorie (nécessite ROLE_ADMIN)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Directors",
+      "item": [
+        {
+          "name": "Get all directors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/directors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "directors"]
+            },
+            "description": "Récupérer la liste de tous les réalisateurs"
+          },
+          "response": []
+        },
+        {
+          "name": "Get director by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/directors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "directors", "1"]
+            },
+            "description": "Récupérer un réalisateur par son ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Media Objects",
+      "item": [
+        {
+          "name": "Get all media objects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/media_objects",
+              "host": ["{{base_url}}"],
+              "path": ["api", "media_objects"]
+            },
+            "description": "Récupérer tous les médias (nécessite ROLE_USER)"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload media",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/ld+json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/media_objects",
+              "host": ["{{base_url}}"],
+              "path": ["api", "media_objects"]
+            },
+            "description": "Uploader un fichier média (nécessite ROLE_USER)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete media object",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/media_objects/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "media_objects", "1"]
+            },
+            "description": "Supprimer un média (nécessite ROLE_USER)"
           },
           "response": []
         }
@@ -297,7 +637,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:8000",
+      "value": "https://bomboclaat.lucaslebecq.fr/v1",
       "type": "string"
     },
     {

@@ -22,7 +22,8 @@ class TwoFactorService
 
     public function generateSecret(): string
     {
-        $totp = TOTP::generate();
+        // Générer un secret de 160 bits (32 caractères base32) compatible avec toutes les apps
+        $totp = TOTP::generate(null, 30, 'sha1', 6);
         return $totp->getSecret();
     }
 
@@ -31,6 +32,9 @@ class TwoFactorService
         $totp = TOTP::createFromSecret($user->getTwoFactorSecret());
         $totp->setLabel($user->getEmail());
         $totp->setIssuer($this->appName);
+        $totp->setPeriod(30);
+        $totp->setDigits(6);
+        $totp->setDigest('sha1');
 
         return $totp->getProvisioningUri();
     }
@@ -63,6 +67,10 @@ class TwoFactorService
         }
 
         $totp = TOTP::createFromSecret($user->getTwoFactorSecret());
+        $totp->setPeriod(30);
+        $totp->setDigits(6);
+        $totp->setDigest('sha1');
+
         return $totp->verify($code);
     }
 
